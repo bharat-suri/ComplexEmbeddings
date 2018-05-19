@@ -62,7 +62,7 @@ def load_embedding(model, normalize=True, lower=False, clean_words=True):
 
 def test_analogy(data, w):
     random.seed(datetime.now())
-    subset = [random.randint(0, 20000) for _ in range(6)]
+    subset = [random.randint(0, 19000) for _ in range(6)]
     # subset = [50, 1000, 4000, 10000, 14000]
     for id in subset:
         w1, w2, w3 = data.X[id][0], data.X[id][1], data.X[id][2]
