@@ -1,4 +1,6 @@
 import argparse
+from datetime import datetime
+import random
 
 from sklearn.datasets.base import Bunch
 import numpy as np
@@ -7,18 +9,18 @@ from package.utils import standardize_string
 from package.embedding import Embedding
 
 def fetch_dataset(analogy):
-	"""
-	fetch_dataset(analogy) -> Takes the analogy dataset as input. Make sure the dataset is clean and a simple text file.
-							  Arguments
-							  ---------
-							  analogy : Input analogy dataset
+    """
+    fetch_dataset(analogy) -> Takes the analogy dataset as input. Make sure the dataset is clean and a simple text file.
+    Arguments
+    ---------
+    analogy : Input analogy dataset
 
-							  Returns
-							  -------
-							  X : matrix of word questions
-							  y : vector of answers
-							  category : name of category
-	"""
+    Returns
+    -------
+    X : matrix of word questions
+    y : vector of answers
+    category : name of category
+    """
     category = []
     questions = []
     answers = []
@@ -37,18 +39,18 @@ def fetch_dataset(analogy):
                  category=np.hstack(category).astype("object"))
 
 def load_embedding(model, normalize=True, lower=False, clean_words=True):
-	"""
-	load_embedding(args**) -> It calls the embedding base class to load the embeddings from the saved model.
-							  Arguments
-							  ---------
-							  model : Saved model with the pre-trained embeddings.
-							  normalize : Whether the embeddings need to be normalized or not.
-							  lower, clean_words : Clean the data by applying lower case and preserving '_' and '-'
+    """
+    load_embedding(args**) -> It calls the embedding base class to load the embeddings from the saved model.
+    Arguments
+    ---------
+    model : Saved model with the pre-trained embeddings.
+    normalize : Whether the embeddings need to be normalized or not.
+    lower, clean_words : Clean the data by applying lower case and preserving '_' and '-'
 
-							  Returns
-							  -------
-							  w : Object of class Embedding
-	"""
+    Returns
+    -------
+    w : Object of class Embedding
+    """
     w = Embedding.from_fasttext(model)
 
     if normalize:
@@ -59,7 +61,9 @@ def load_embedding(model, normalize=True, lower=False, clean_words=True):
     return w
 
 def test_analogy(data, w):
-    subset = [50, 1000, 4000, 10000, 14000]
+    random.seed(datetime.now())
+    subset = [random.randint(0, 20000) for _ in range(6)]
+    # subset = [50, 1000, 4000, 10000, 14000]
     for id in subset:
         w1, w2, w3 = data.X[id][0], data.X[id][1], data.X[id][2]
         print("Question: {} is to {} as {} is to ?".format(w1, w2, w3))

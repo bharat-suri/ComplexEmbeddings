@@ -49,4 +49,22 @@ Next, we try to see how these pre-trained embeddings perform on the [Google Anal
 
 ```shell
 $ python analogy.py -i data/questions-words.txt -m model/pre_wiki
+Question: high is to higher as great is to ?
+Answer: greater
+Predicted: greater
+Question: glendale is to arizona as akron is to ?
+Answer: ohio
+Predicted: ohio
+Question: ethical is to unethical as comfortable is to ?
+Answer: uncomfortable
+Predicted: comfortably
+Question: netherlands is to dutch as brazil is to ?
+Answer: brazilian
+Predicted: brazilian
+Question: free is to freely as happy is to ?
+Answer: happily
+Predicted: happily
+Question: luanda is to angola as monrovia is to ?
+Answer: liberia
+Predicted: liberia
 ```
