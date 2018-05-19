@@ -7,6 +7,18 @@ from package.utils import standardize_string
 from package.embedding import Embedding
 
 def fetch_dataset(analogy):
+	"""
+	fetch_dataset(analogy) -> Takes the analogy dataset as input. Make sure the dataset is clean and a simple text file.
+							  Arguments
+							  ---------
+							  analogy : Input analogy dataset
+
+							  Returns
+							  -------
+							  X : matrix of word questions
+							  y : vector of answers
+							  category : name of category
+	"""
     category = []
     questions = []
     answers = []
@@ -25,6 +37,18 @@ def fetch_dataset(analogy):
                  category=np.hstack(category).astype("object"))
 
 def load_embedding(model, normalize=True, lower=False, clean_words=True):
+	"""
+	load_embedding(args**) -> It calls the embedding base class to load the embeddings from the saved model.
+							  Arguments
+							  ---------
+							  model : Saved model with the pre-trained embeddings.
+							  normalize : Whether the embeddings need to be normalized or not.
+							  lower, clean_words : Clean the data by applying lower case and preserving '_' and '-'
+
+							  Returns
+							  -------
+							  w : Object of class Embedding
+	"""
     w = Embedding.from_fasttext(model)
 
     if normalize:

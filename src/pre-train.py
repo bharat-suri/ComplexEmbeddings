@@ -2,11 +2,27 @@ import argparse
 import logging
 from gensim.models.word2vec import LineSentence
 from gensim.models import FastText
-
+"""
+We are using the wrapper for FastText available in the Gensim package. FastText is an extension to the word2vec
+skipgram model, as it uses character n-grams to generate word embeddings. This allows for the model to create embeddings
+for out of vocabulary words with the help of previously identified n-gram embeddings.
+"""
 logging.basicConfig(format='%(levelname)s : %(message)s', level=logging.INFO)
 logging.root.level = logging.INFO
 
 def train(infile, outfile, skipgram, loss, size, epochs):
+	"""
+	train(args**) -> Takes the input file, the output file and the model hyperparameters as arguments and trains the model accordingly.
+					 The model is saved at the output location.
+					 Arguments
+					 ---------
+					 infile : Input pre-processed wiki dump
+					 outfile : Output directory to save the model.
+					 skipgram : Layers of the model (0 - CBOW, 1 - Skipgram)
+					 loss : Loss Function (0 - Negative Sampling, 1 - Heirarichal Loss)
+					 size : Embedding size (100 ~ 300)
+					 epochs : Number of epochs
+	"""
 	sentence = LineSentence(infile)
 
 	model = FastText(sentence, sg=skipgram, hs=loss, size=size, alpha=0.05, window=5,
