@@ -44,7 +44,7 @@ $ mkdir model
 $ python src/pre-train.py -i data/fil9 -o model/pre_wiki -s 300 -sg 1 -hs 1 -e 5
 ```
 
-Next, we try to see how these pre-trained embeddings perform on the Google Analogy Task. For this we have the [analogy.py](https://github.com/tramplingWillow/ComplexEmbeddings/blob/master/src/analogy.py).<br>
+Next, we try to see how these pre-trained embeddings perform on the [Google Analogy Task](http://download.tensorflow.org/data/questions-words.txt). For this we have the [analogy.py](https://github.com/tramplingWillow/ComplexEmbeddings/blob/master/src/analogy.py).<br>
 *Updates are to be made so that the script evaluates the model for the entire dataset.*
 
 ```shell
