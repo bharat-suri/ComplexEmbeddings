@@ -31,13 +31,13 @@ $ perl src/package/wikifil.pl data/enwik9 > data/fil9
 
 The script, [pre-train.py](https://github.com/tramplingWillow/ComplexEmbeddings/blob/master/src/pre-train.py) takes the following arguments:
 - Files
-  - Input File : Clean wiki dump
-  - Output File : Saved model
+  - Input File: Clean wiki dump
+  - Output File: Saved model
 - Model Hyperparameters
-  - Vector Size, *-s* : Defines the Embedding Size
-  - Skipgram, *-sg* : Decides whether model uses skipgram or CBOW
-  - Loss Function, *-hs* : Loss function used is Heirarichal Softmax or Negative Sampling
-  - Epochs, *-e* : Number of epochs
+  - Vector Size, *-s*: Defines the Embedding Size
+  - Skipgram, *-sg*: Decides whether model uses skipgram or CBOW
+  - Loss Function, *-hs*: Loss function used is Hierarchal Softmax or Negative Sampling
+  - Epochs, *-e*: Number of epochs
 
 ```shell
 $ mkdir model
