@@ -448,6 +448,9 @@ class Embedding(object):
 
     @staticmethod
     def from_fasttext(fname):
+        """
+        Load the input-hidden weight matrix from the original FastText model.
+        """
         model = FastText.load(fname)
         wv, vocab = model.wv, model.wv.vocab
         del model
