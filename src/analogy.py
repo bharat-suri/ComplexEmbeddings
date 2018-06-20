@@ -60,7 +60,7 @@ def load_embedding(model, normalize=True, lower=False, clean_words=True):
 
     return w
 
-def test_analogy(data, w):
+def test_analogy(data, w, outfile):
     # random.seed(datetime.now())
     # subset = [random.randint(0, 19000) for _ in range(6)]
     # subset = [50, 1000, 4000, 10000, 14000]
@@ -70,6 +70,7 @@ def test_analogy(data, w):
     #     print("Answer: " + data.y[id])
     #     print("Predicted: " + " ".join(w.nearest_neighbors(w[w2] - w[w1] + w[w3], exclude=[w1, w2, w3])))
     score, count = 0, 0
+    semantic, syntactic = 0, 0
     for idx in range(0, 19544):
         w1, w2, w3 = data.X[idx][0], data.X[idx][1], data.X[idx][2]
         # print("Question: {} is to {} as {} is to ?".format(w1, w2, w3))
@@ -77,8 +78,15 @@ def test_analogy(data, w):
         # print("Predicted: " + " ".join(w.nearest_neighbors(w[w2] - w[w1] + w[w3], exclude=[w1, w2, w3])))
         if " ".join(w.nearest_neighbors(w[w2] - w[w1] + w[w3], exclude=[w1, w2, w3])) == str(data.y[idx]):
             score += 1
+            if idx < 8869:
+                semantic += 1
         count += 1
-        print("Total Questions : " + str(count) + " Benchmark : " + str((score/count)*100), end="\r")
+        print("Total Questions : " + str(count) + " Benchmark : " + str((score/count)*100), end='\r')
+    syntactic = score - semantic
+    print("Total Questions : " + str(count) + " Benchmark : " + str((score/count)*100))
+    with open(outfile) as f:
+        f.write("Total Questions: " + str(count) + " Benchmark: " + str((score/count)*100), end='\n')
+        f.write("Hits @1 : " + str(score) + " Semantic: " + str(semantic) + " Syntactic: " + str(syntactic), end='\n')
     # print("\n\nTotal Questions : ", count)
     # print("Benchmark : ", (score/count)*100)
 
@@ -86,7 +94,7 @@ def main(args):
     analogy, outfile, model = args.input, args.output, args.model
     data = fetch_dataset(analogy)
     embeddings = load_embedding(model, normalize=True, lower=False, clean_words=True)
-    test_analogy(data, embeddings)
+    test_analogy(data, embeddings, outfile)
 
 
 

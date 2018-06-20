@@ -13,8 +13,8 @@ def main(file, data):
 	wv = model.wv
 	del model
 	for word in wv.index2word:
-		word_vecs_norm[word] = np.zeros(200, dtype=float)
-		word_vecs[word] = np.zeros(200, dtype=float)
+		word_vecs_norm[word] = np.zeros(300, dtype=float)
+		word_vecs[word] = np.zeros(300, dtype=float)
 		for index,val in enumerate(wv.get_vector(word)):
 			word_vecs_norm[word][index] = float(val)
 			word_vecs[word][index] = float(val)
