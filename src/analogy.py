@@ -24,7 +24,7 @@ def fetch_dataset(analogy):
     category = []
     questions = []
     answers = []
-    with open(analogy) as question:
+    with open(analogy, "r") as question:
         for line in question:
             if line.startswith(":"):
                 c = line.lower().split()[1]
@@ -38,12 +38,13 @@ def fetch_dataset(analogy):
                  y=np.hstack(answers).astype("object"),
                  category=np.hstack(category).astype("object"))
 
-def load_embedding(model, normalize=True, lower=False, clean_words=True):
+def load_embedding(model, fasttext, normalize=True, lower=False, clean_words=True):
     """
     load_embedding(args**) -> It calls the embedding base class to load the embeddings from the saved model.
     Arguments
     ---------
     model : Saved model with the pre-trained embeddings.
+    fasttext : FastText or Word2Vec
     normalize : Whether the embeddings need to be normalized or not.
     lower, clean_words : Clean the data by applying lower case and preserving '_' and '-'
 
@@ -51,7 +52,10 @@ def load_embedding(model, normalize=True, lower=False, clean_words=True):
     -------
     w : Object of class Embedding
     """
-    w = Embedding.from_fasttext(model)
+    if fasttext == "fasttext"
+        w = Embedding.from_fasttext(model)
+    else:
+        w = Embedding.from_gensim_word2vec(model)
 
     if normalize:
         w.normalize_words(inplace=True)
@@ -84,16 +88,16 @@ def test_analogy(data, w, outfile):
         print("Total Questions : " + str(count) + " Benchmark : " + str((score/count)*100), end='\r')
     syntactic = score - semantic
     print("Total Questions : " + str(count) + " Benchmark : " + str((score/count)*100))
-    with open(outfile) as f:
+    with open(outfile, "w") as f:
         f.write("Total Questions: " + str(count) + " Benchmark: " + str((score/count)*100), end='\n')
         f.write("Hits @1 : " + str(score) + " Semantic: " + str(semantic) + " Syntactic: " + str(syntactic), end='\n')
     # print("\n\nTotal Questions : ", count)
     # print("Benchmark : ", (score/count)*100)
 
 def main(args):
-    analogy, outfile, model = args.input, args.output, args.model
+    analogy, outfile, model, fasttext = args.input, args.output, args.model, args.fasttext
     data = fetch_dataset(analogy)
-    embeddings = load_embedding(model, normalize=True, lower=False, clean_words=True)
+    embeddings = load_embedding(model, fasttext, normalize=True, lower=False, clean_words=True)
     test_analogy(data, embeddings, outfile)
 
 
@@ -108,6 +112,8 @@ if __name__ == '__main__':
                             help="Output directory to save the analogy results")
     groupF.add_argument("-m", "--model", default="result/pre_wiki",
                             help="Saved model with pre-trained embeddings")
+    groupF.add_argument("-f", "--fasttext", default="fasttext",
+                            help="FastText or Word2Vec")
 
     args = parser.parse_args()
 

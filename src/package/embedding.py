@@ -22,6 +22,7 @@ from .utils import standardize_string, to_utf8
 
 from sklearn.metrics import pairwise_distances
 from gensim.models import FastText
+from gensim.models import word2vec
 
 logger = logging.getLogger(__name__)
 
@@ -452,6 +453,24 @@ class Embedding(object):
         Load the input-hidden weight matrix from the original FastText model.
         """
         model = FastText.load(fname)
+        wv, vocab = model.wv, model.wv.vocab
+        del model
+        vocabulary = None
+        words = [_ for _ in vocab]
+        vectors = [wv.get_vector(_) for _ in words]
+        vectors = np.array(vectors, dtype=np.float32)
+        vocabulary = OrderedVocabulary(words)
+
+        e = Embedding(vocabulary=vocabulary, vectors=vectors)
+
+        return e
+
+    @staticmethod
+    def from_gensim_word2vec(fname):
+        """
+        Load the input-hidden weight matrix from the original Word2Vec model.
+        """
+        model = word2vec.load(fname)
         wv, vocab = model.wv, model.wv.vocab
         del model
         vocabulary = None
