@@ -22,7 +22,7 @@ from .utils import standardize_string, to_utf8
 
 from sklearn.metrics import pairwise_distances
 from gensim.models import FastText
-from gensim.models import word2vec
+from gensim.models import Word2Vec
 
 logger = logging.getLogger(__name__)
 
@@ -466,7 +466,7 @@ class Embedding(object):
         return e
 
     @staticmethod
-    def from_gensim_word2vec(fname):
+    def from_gensim_Word2Vec(fname):
         """
         Load the input-hidden weight matrix from the original Word2Vec model.
         """

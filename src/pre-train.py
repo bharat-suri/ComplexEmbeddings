@@ -2,7 +2,7 @@ import argparse
 import logging
 from gensim.models.word2vec import LineSentence
 from gensim.models import FastText
-from gensim.models import word2vec
+from gensim.models import Word2Vec
 """
 We are using the wrapper for FastText available in the Gensim package. FastText is an extension to the word2vec
 skipgram model, as it uses character n-grams to generate word embeddings. This allows for the model to create embeddings
@@ -46,7 +46,7 @@ def train_word2vec(infile, outfile, skipgram, loss, size, epochs):
 	"""
 	sentence = LineSentence(infile)
 
-	model = word2vec(sentence, sg=skipgram, hs=loss, size=size, alpha=0.05, window=5,
+	model = Word2Vec(sentence, sg=skipgram, hs=loss, size=size, alpha=0.05, window=5,
 					min_count=5, min_n=2, max_n=5, workers=3, iter=epochs)
 
 	model.save(outfile)
