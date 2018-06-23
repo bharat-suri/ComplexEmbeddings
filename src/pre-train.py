@@ -47,12 +47,12 @@ def train_word2vec(infile, outfile, skipgram, loss, size, epochs):
 	sentence = LineSentence(infile)
 
 	model = Word2Vec(sentence, sg=skipgram, hs=loss, size=size, alpha=0.05, window=5,
-					min_count=5, min_n=2, max_n=5, workers=3, iter=epochs)
+					min_count=5, workers=3, iter=epochs)
 
 	model.save(outfile)
 
 def main(args):
-	infile, outfile = args.input, args.output, args.mode
+	infile, outfile, mode = args.input, args.output, args.mode
 	skipgram, loss, size, epochs = int(args.skipgram), int(args.loss), int(args.size), int(args.epochs)
 	if mode == "fasttext":
 		train_fasttext(infile, outfile, skipgram, loss, size, epochs)
@@ -62,12 +62,12 @@ def main(args):
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	groupF = parser.add_argument_group('Files')
-	groupF.add_argument("-m", "--mode", default="fasttext",
-							help="Word2Vec or FastText")
 	groupF.add_argument("-i", "--input", default="data/file9",
 							help="Clean wiki dump file with text")
 	groupF.add_argument("-o", "--output", default="model/pre_wiki",
 							help="Output directory to save the model")
+	groupF.add_argument("-m", "--mode", default="fasttext",
+							help="Word2Vec or FastText")
 	groupM = parser.add_argument_group('Model')
 	groupM.add_argument("-s", "--size", default="200",
 							help="Embedding size")
