@@ -1,6 +1,7 @@
 import sys
 import re
 import os
+import codecs
 
 def upcase_first_letter(s):
 	return s[0].upper() + s[1:]
@@ -13,7 +14,7 @@ class MySentences(object):
 		for root, dirs, files in os.walk(self.dirname):
 			for filename in files:
 				file_path = root + '/' + filename
-				for line in open(file_path):
+				for line in codecs.open(file_path, 'r', encoding='utf-8', errors='ignore'):
 					#print("Root:{0}, Dirs:{1}, Files:{2}".format(root, dirs, files))
 					#print(line)
 					if line == "\n":
@@ -41,7 +42,7 @@ def makeDictionary(directory):
 				dictionary[entity] = entity
 				dictionary[entity] += ';' + anchor
 			print("Anchor Text found : " + str(counter), end = '\r')
-	with open('AnchorDictionary.csv', '+w') as output:
+	with open('../data/AnchorDictionary.csv', '+w') as output:
 		for entity in dictionary:
 			print('Writing to file: ' + entity, end = '\r')
 			output.write(dictionary[entity] + '\n')

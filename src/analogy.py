@@ -1,6 +1,10 @@
 import argparse
 from datetime import datetime
 import random
+import os
+import sys
+
+sys.path.append(os.getcwd())
 
 from sklearn.datasets.base import Bunch
 import numpy as np
@@ -52,7 +56,7 @@ def load_embedding(model, fasttext, normalize=True, lower=False, clean_words=Tru
     -------
     w : Object of class Embedding
     """
-    if fasttext == "fasttext"
+    if fasttext == "fasttext":
         w = Embedding.from_fasttext(model)
     else:
         w = Embedding.from_gensim_word2vec(model)

@@ -1038,7 +1038,7 @@ class Extractor(object):
         # part-value      = wikitext-L3
         # wikitext-L3     = literal / template / tplarg / link / comment /
         #                   line-eating-comment / unclosed-comment /
-        #           	    xmlish-element / *wikitext-L3
+        #                   xmlish-element / *wikitext-L3
 
         # A tplarg may contain other parameters as well as templates, e.g.:
         #   {{{text|{{{quote|{{{1|{{error|Error: No text given}}}}}}}}}}}
@@ -2222,7 +2222,7 @@ def replaceInternalLinks(text):
 #                 if '%' in m.group(1):
 #                     m.group(1) = rawurldecode(m.group(1))
 #                 trail = ""
-#             else:		# Invalid form; output directly
+#             else:     # Invalid form; output directly
 #                 s += prefix + '[[' + line
 #                 continue
 
@@ -2255,7 +2255,7 @@ def replaceInternalLinks(text):
 #         ns = nt.getNamespace()
 #         iw = nt.getInterwiki()
 
-#         if might_be_img {	# if this is actually an invalid link
+#         if might_be_img { # if this is actually an invalid link
 #             if (ns == NS_FILE and noforce) { # but might be an image
 #                 found = False
 #                 while True:

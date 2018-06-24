@@ -466,11 +466,11 @@ class Embedding(object):
         return e
 
     @staticmethod
-    def from_gensim_Word2Vec(fname):
+    def from_gensim_word2vec(fname):
         """
         Load the input-hidden weight matrix from the original Word2Vec model.
         """
-        model = word2vec.load(fname)
+        model = Word2Vec.load(fname)
         wv, vocab = model.wv, model.wv.vocab
         del model
         vocabulary = None
