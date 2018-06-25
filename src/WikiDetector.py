@@ -90,7 +90,7 @@ def loadSurfaceForms(filename, most_cmmn):
 	with open(filename, 'r') as output:
 		for line in output:
 			c += 1
-			print('Loading surface forms: ' + str(int(c*1000/569348)/10) + '%', end = '\r')
+			print('Loading surface forms: ' + str(int(c*1000/746565)/10) + '%', end = '\r')
 			surfaceForm[line.split(';', 1)[0]] = set(x[0] for x in Counter(line.rstrip('\n').split(';', 1)[1].split(';')).most_common(most_cmmn))
 	return surfaceForm
 
@@ -129,9 +129,9 @@ def splitFiles(directory):
 if __name__ == "__main__":
 	directory = sys.argv[1]
 
-	surfForms = loadSurfaceForms("AnchorDictionary.csv", 5)#selecting the top 5 most common anchor text
+	surfForms = loadSurfaceForms("data/AnchorDictionary.csv", 5)#selecting the top 5 most common anchor text
 	# commonRef = loadDictionary("MostCommon.csv")
-	gender = loadDictionary('gender.csv')
+	gender = loadDictionary('data/gender.csv')
 
 	names = []
 	for root, dirs, files in os.walk(directory):
