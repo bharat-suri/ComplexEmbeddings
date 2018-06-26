@@ -5,7 +5,7 @@ import sys
 def p(a, b):
 	return ',' + str(100*a/b)
 
-def countPronouns(filename):
+def countPronouns(filename, f):
 	"""people = []
 	with open('dbo:Person', 'r') as op:
 		for line in op:
@@ -20,7 +20,7 @@ def countPronouns(filename):
 	# nc = 0
 	# plurForms = ['they', 'them', 'their']
 	# pc = 0
-	with open('../data/gender.csv', 'w+') as output:
+	with open(f, 'w+') as output:
 		with open(filename, 'r') as inp:
 			for line in inp:
 				if line.startswith("<doc"):
@@ -48,7 +48,7 @@ def countPronouns(filename):
 					wc = mc = fc = nc = pc = 0
 
 if __name__ == "__main__":
-	directory = sys.argv[1]
+	directory, f = sys.argv[1], sys.argv[2]
 	for root, dirs, files in os.walk(directory):
 		for file in files:
-			countPronouns(root + '/' + file)
+			countPronouns(root + '/' + file, f)

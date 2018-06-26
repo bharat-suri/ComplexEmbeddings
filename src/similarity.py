@@ -2,7 +2,7 @@ import os
 import sys
 import numpy as np
 import math
-from ranking import *
+from package.ranking import *
 
 from gensim.models import FastText
 
