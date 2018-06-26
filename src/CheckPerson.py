@@ -6,10 +6,18 @@ def p(a, b):
 	return ',' + str(100*a/b)
 
 def countPronouns(filename, f):
-	"""people = []
-	with open('dbo:Person', 'r') as op:
-		for line in op:
-			people.append(line.strip('\n'))"""
+	"""
+	countPronouns(filename, f) -> Takes the input file with the extracted text from the Wikipedia dump and finds whether
+	given article is about a Male or a Female.
+	Arguments
+	---------
+	filename : The input file.
+	f : Output file with all the titles and their respective form( Masculine / Feminine )
+	"""
+	# people = []
+	# with open('dbo:Person', 'r') as op:
+	# 	for line in op:
+	# 		people.append(line.strip('\n'))
 	title = ''
 	wc = 0
 	mascForms = ['he', 'him', 'his']

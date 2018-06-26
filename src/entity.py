@@ -2,12 +2,17 @@ import argparse
 import re
 
 def main(args):
-	pattern1 = re.compile(r"\[\[(\w+)\]\]")
-	pattern2 = re.compile(r"\{\{(\w+)\}\}")
+	"""
+	I wanted to list all the titles present in the aricles dump. Currently that task is being performed through
+	the script description.py
+	"""
+
+	pattern1 = re.compile(r"\[\[(\w+)\]\]")			# All patterns of the form [[article_title]]
+	pattern2 = re.compile(r"\{\{(\w+)\}\}")			# All patterns of the form {{article_title}}
 	entities = set()
 	with open(args.input, 'r') as inFile:
 		for line in inFile:
-			if '<text' in line:
+			if '<text' in line:						# Trying to parse the XML dump through the tag structure.
 				try:
 					entity = str(pattern1.search(line).group(1))
 					entities.add(entity)

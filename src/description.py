@@ -3,12 +3,18 @@ import sys
 from urllib.parse import unquote
 import codecs
 
-def reader(file):
-	with open(file, 'r') as infile:
-		for line in infile:
-			yield line
+# def reader(file):
+# 	with open(file, 'r') as infile:
+# 		for line in infile:
+# 			yield line
 
 def main():
+	"""
+	The script processes input XML dump for all Wikipedia Abstracts and outputs a JSON file with the entities
+	and their abstracts in key: value pairs.
+
+	dictionary[entity] = abstract
+	"""
 	file, dictionary = sys.argv[1], sys.argv[2]
 	count = 0
 	with open(file, 'r') as infile:
@@ -16,6 +22,10 @@ def main():
 			for line in infile:
 			# for line in codecs.open(file, 'r', encoding='utf-8', errors='ignore'):
 				description = {}
+				"""
+				I am trying to remove the url from the doc to get the title and then cleaning the abstract for
+				that title.
+				"""
 				if line.startswith('<url>'):
 					entity = unquote(line)
 					entity = entity.replace('https://en.wikipedia.org/wiki', '').lstrip('<url>').replace('</url>', '').strip()
