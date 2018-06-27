@@ -2,6 +2,7 @@ import json
 import sys
 from urllib.parse import unquote
 import codecs
+import string, unicodedata
 
 # def reader(file):
 # 	with open(file, 'r') as infile:
@@ -17,6 +18,7 @@ def main():
 	"""
 	file, dictionary = sys.argv[1], sys.argv[2]
 	count = 0
+	table = str.maketrans('', '', string.punctuation)
 	with open(file, 'r') as infile:
 		with open(dictionary, 'w+') as outfile:
 			for line in infile:
@@ -28,10 +30,12 @@ def main():
 				"""
 				if line.startswith('<url>'):
 					entity = unquote(line)
-					entity = entity.replace('https://en.wikipedia.org/wiki', '').lstrip('<url>').replace('</url>', '').strip()
+					entity = "resource" + entity.replace('https://en.wikipedia.org/wiki', '').lstrip('<url>').replace('</url>', '').strip()
 					# print(entity)
 				if line.startswith('<abstract>'):
 					abstract = line.lstrip('<abstract>').replace('</abstract>', '').replace('(', '').replace(')', '').strip()
+					abstract = abstract.translate(table)
+					abstract = ' '.join(abstract.split())
 					# print(abstract)
 					count += 1
 					print("Total abstracts : " + str(count), end='\r')
