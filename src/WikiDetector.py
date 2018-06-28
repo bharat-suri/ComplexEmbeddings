@@ -7,31 +7,47 @@ from joblib import Parallel, delayed
 from urllib.parse import unquote
 from collections import Counter
 
-# def upcase_first_letter(s):
-#     return s[0].upper() + s[1:]
+def upcase_first_letter(s):
+	"""
+	Capitalize the string.
+	"""
+    return s[0].upper() + s[1:]
 
 def replaceAnchorText(filename):
+	"""
+	Given the input file, the surface forms loaded from anchor text
+	are used to extract entity mentions and replace them with the
+	article title in the text corpus itself.
+
+	Arguments
+	---------
+	filename : Input file containing the extracted text.
+	"""
 	print(filename)
-	#create a temporary file
+
+	# A temporary file to track the input file document by document.
 	t = tempfile.NamedTemporaryFile(mode = "r+")
 	dictionary = {}
 	with open(filename, 'r') as fil:
 		for line in fil:
 			if line.startswith("<doc"):
 				t.write(line)
+
+				# Get the title of the document from XML
 				title = line.split('title="')[1].split('">')[0]
 				TITLE = title.replace(' ', '_')
+
 				dictionary = {}
 				next(fil)
-				# print(title)
+
+				# Global surface forms dictionary
 				global surfForms
-				# print(surfForms)
 				try:
 					dictionary[TITLE] = surfForms[TITLE]
-					# print(surfForms[title])
 				except:
 					dictionary[TITLE] = set([title])
 
+				# Gender dictionary from checking persons
 				global gender
 
 				try:
@@ -43,10 +59,11 @@ def replaceAnchorText(filename):
 					pass
 
 				continue
+
+			# Regular expressions to find and replace anchor text with resource entity
 			elif not line == '\n':
 				links = re.findall(r'\<a href\=\"([^\"\:]+)\"\>([^\<]+)\</a\>', line)
 				for link in links:
-					# print(link[0] + '====' +link[1])
 					entity = link[0].replace('wikt%3A', ''); entity = entity.replace('wiktionary%3A', '')
 					if entity == '':
 						entity = link[1]
@@ -63,13 +80,7 @@ def replaceAnchorText(filename):
 					try:
 						line = re.sub(r"\b(?<![\/\(])%s\b" % surfaceForm, 'resource/' + entity , line, flags = re.IGNORECASE)
 					except:
-						# print("Unable to tag: " + surfaceForm + " as " + entity)
 						dictionary[entity].remove(surfaceForm)
-
-				# global commonRef
-
-				# for entity in commonRef:
-				# 	line = re.sub(r"\b(?<![\/\(])%s\b" % commonRef[entity], 'resource/' + entity , line, flags = re.IGNORECASE)
 
 			if not line == '\n':
 				t.write(line)
@@ -85,6 +96,16 @@ def replaceAnchorText(filename):
 	return None
 
 def loadSurfaceForms(filename, most_cmmn):
+	"""
+	Takes the surface form dictionary as input and
+	returns the loaded entities mapped onto their
+	most common surface forms.
+
+	Arguments
+	---------
+	filename : Input dictionary
+	most_cmmn : Parameter to decide the most common surface forms
+	"""
 	surfaceForm = {}
 	c = 0
 	with open(filename, 'r') as output:
@@ -95,6 +116,9 @@ def loadSurfaceForms(filename, most_cmmn):
 	return surfaceForm
 
 def loadDictionary(filename):
+	"""
+	Loads the entire surface form dictionary from memory
+	"""
 	surfaceForm = {}
 	with open(filename, 'r') as output:
 		for line in output:
@@ -105,6 +129,9 @@ def loadDictionary(filename):
 	return surfaceForm
 
 def splitFiles(directory):
+	"""
+	Iterate through the files in the extracted directory
+	"""
 	names = []
 	for root, dirs, files in os.walk(directory):
 		for file in files:
@@ -129,8 +156,7 @@ def splitFiles(directory):
 if __name__ == "__main__":
 	directory = sys.argv[1]
 
-	surfForms = loadSurfaceForms("data/AnchorDictionary.csv", 5)#selecting the top 5 most common anchor text
-	# commonRef = loadDictionary("MostCommon.csv")
+	surfForms = loadSurfaceForms("data/AnchorDictionary.csv", 5)
 	gender = loadDictionary('data/gender.csv')
 
 	names = []
@@ -139,4 +165,3 @@ if __name__ == "__main__":
 			names.append(root + '/' + file)
 	
 	Parallel(n_jobs = 8, verbose = 51)(delayed(replaceAnchorText)(name) for name in names)
-		# replaceAnchorText(file)

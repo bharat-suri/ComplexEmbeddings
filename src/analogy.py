@@ -14,7 +14,9 @@ from package.embedding import Embedding
 
 def fetch_dataset(analogy):
     """
-    fetch_dataset(analogy) -> Takes the analogy dataset as input. Make sure the dataset is clean and a simple text file.
+    Takes the analogy dataset as input.
+    Make sure the dataset is clean and a simple text file.
+    
     Arguments
     ---------
     analogy : Input analogy dataset
@@ -44,7 +46,8 @@ def fetch_dataset(analogy):
 
 def load_embedding(model, fasttext, normalize=True, lower=False, clean_words=True):
     """
-    load_embedding(args**) -> It calls the embedding base class to load the embeddings from the saved model.
+    It calls the embedding base class to load the embeddings from the saved model.
+    
     Arguments
     ---------
     model : Saved model with the pre-trained embeddings.
@@ -69,21 +72,25 @@ def load_embedding(model, fasttext, normalize=True, lower=False, clean_words=Tru
     return w
 
 def test_analogy(data, w, outfile):
-    # random.seed(datetime.now())
-    # subset = [random.randint(0, 19000) for _ in range(6)]
-    # subset = [50, 1000, 4000, 10000, 14000]
-    # for id in subset:
-    #     w1, w2, w3 = data.X[id][0], data.X[id][1], data.X[id][2]
-    #     print("Question: {} is to {} as {} is to ?".format(w1, w2, w3))
-    #     print("Answer: " + data.y[id])
-    #     print("Predicted: " + " ".join(w.nearest_neighbors(w[w2] - w[w1] + w[w3], exclude=[w1, w2, w3])))
+    """
+    With the Google Analogy Dataset and the embeddings loaded, we can
+    simply use the similarity in embeddings to see if the model was
+    able to preserve the meaning of the text in those embeddings.
+
+    Arguments
+    ---------
+    data : The Google SAT dataset to evaluate the embeddings.
+    w : Embedding object loaded from the saved model.
+    outfile : Benchmark file to save the results of the evaluation test.
+    """
     score, count = 0, 0
+
+    # Checking the scores for both categories separately
     semantic, syntactic = 0, 0
     for idx in range(0, 19544):
         w1, w2, w3 = data.X[idx][0], data.X[idx][1], data.X[idx][2]
-        # print("Question: {} is to {} as {} is to ?".format(w1, w2, w3))
-        # print("Answer: " + data.y[id])
-        # print("Predicted: " + " ".join(w.nearest_neighbors(w[w2] - w[w1] + w[w3], exclude=[w1, w2, w3])))
+
+        # Works analogous to the most_similar method in Gensim.Word2Vec
         if " ".join(w.nearest_neighbors(w[w2] - w[w1] + w[w3], exclude=[w1, w2, w3])) == str(data.y[idx]):
             score += 1
             if idx < 8869:
@@ -95,8 +102,6 @@ def test_analogy(data, w, outfile):
     with open(outfile, "w") as f:
         f.write("Total Questions: " + str(count) + " Benchmark: " + str((score/count)*100), end='\n')
         f.write("Hits @1 : " + str(score) + " Semantic: " + str(semantic) + " Syntactic: " + str(syntactic), end='\n')
-    # print("\n\nTotal Questions : ", count)
-    # print("Benchmark : ", (score/count)*100)
 
 def main(args):
     analogy, outfile, model, fasttext = args.input, args.output, args.model, args.fasttext

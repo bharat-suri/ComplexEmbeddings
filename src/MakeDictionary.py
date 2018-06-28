@@ -6,6 +6,7 @@ import codecs
 def upcase_first_letter(s):
 	return s[0].upper() + s[1:]
 
+# Replaces the Gensim class LineSentence
 class MySentences(object):
 	def __init__(self, dirname):
 		self.dirname = dirname
@@ -15,27 +16,27 @@ class MySentences(object):
 			for filename in files:
 				file_path = root + '/' + filename
 				for line in codecs.open(file_path, 'r', encoding='utf-8', errors='ignore'):
-					#print("Root:{0}, Dirs:{1}, Files:{2}".format(root, dirs, files))
-					#print(line)
 					if line == "\n":
 						continue
 					yield line
 
 def makeDictionary(directory):
-  #takes about 20 min
+	"""
+	All the links present in the corpus are treated as resources and
+	the text is treated as the surface form for that very entity.
+	"""
 	counter = 0
 	print("Opened ", directory)
 	sentences = MySentences(directory)
 	dictionary = {}
 	for line in sentences:
 		counter += 1
-		#print(line)
+
+		# Finding all the anchor text, that is the <a> tags
 		links = re.findall(r'\<a href\=\"([^\"\:]+)\"\>([^\<]+)\</a\>', line)
 		for link in links:
-			#print(link)
 			entity = upcase_first_letter(link[0]).replace('%20','_').replace('%28','(').replace('%29',')')
 			anchor = link[1].split(' (')[0]
-			#removes the bold and italics wikicode. Also removes trailing parentheses from the anchor text.
 			try:
 				dictionary[entity] += ';' + anchor
 			except:

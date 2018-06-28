@@ -4,12 +4,13 @@ import json
 import re
 
 directory, file, output = sys.argv[1], sys.argv[2], sys.argv[3]
-entities = set()
 
 """
-Uncomment the following lines to count the unique resources in the entire corpus. These are the injected entities which
-were tagged with the help of Surface Forms generated from the original dump.
+Uncomment the following lines to count the unique resources in the entire corpus.
+These are the injected entities which were tagged with the help of Surface Forms
+generated from the original dump.
 """
+# entities = set()
 # for root, dirs, files in os.walk(directory):
 # 	for f in files:
 # 		path = root + '/' + f
@@ -21,7 +22,8 @@ were tagged with the help of Surface Forms generated from the original dump.
 # del entities
 
 """
-Here I will create a dictionary containing the mappings between the entities and their descriptions.
+Here I will create a dictionary containing the mappings
+between the entities and their descriptions.
 """
 def reader(fname):
 	with codecs.open(path, 'r', encoding='utf-8', errors='ignore') as infile:
@@ -31,8 +33,9 @@ def reader(fname):
 			prev = line
 
 """
-The following snippet combines the different files extracted using the extract.py script and creates a single file
-with complete text that can be used to generate pre-trained embeddings.
+The following snippet combines the different files extracted
+using the extract.py script and creates a single file with
+complete text that can be used to generate pre-trained embeddings.
 """
 with open(file, 'w+') as outfile:
 	for root, dirs, files in os.walk(directory):
@@ -44,9 +47,13 @@ with open(file, 'w+') as outfile:
 					if '<doc' in line:
 						pass
 					else:
+
+						# Obtain just the processed text from the multiple files
 						outfile.write(line)
 
 count = 0
+
+# Pattern to extract title from the document url
 pattern = r'(title=)+(.\w+.)*'
 with open(output, 'w+') as outdict:
 	for root, dirs, files in os.walk(directory):
@@ -58,8 +65,8 @@ with open(output, 'w+') as outdict:
 					if prev.startswith('<doc') and not line.startswith('<doc'):
 						try:
 							ent = re.search(pattern, prev).group().replace(' ', '_').replace('title="', '').strip('"')
-							# ent = re.search(r'(resource/)+(\w+)', line)
-							# ent = ent.group()
+
+							# Line serves the purpose of description
 							dictionary[ent] = line
 							json.dump(dictionary, outdict)
 							outdict.write('\n')
@@ -70,6 +77,5 @@ with open(output, 'w+') as outdict:
 							continue
 					else:
 						pass
-
 
 print("Descriptions : " + str(count))
