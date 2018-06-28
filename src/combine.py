@@ -65,7 +65,8 @@ with open(output, 'w+') as outdict:
 					if prev.startswith('<doc') and not line.startswith('<doc'):
 						try:
 							ent = re.search(pattern, prev).group().replace(' ', '_').replace('title="', '').strip('"')
-
+							ent = "resource/" + ent
+							
 							# Line serves the purpose of description
 							dictionary[ent] = line
 							json.dump(dictionary, outdict)
