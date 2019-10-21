@@ -8,7 +8,7 @@ docutils==0.14
 gensim==3.4.0
 idna==2.6
 jmespath==0.9.3
-nltk==3.2.5
+nltk==3.4.5
 numpy==1.14.3
 Pillow==5.1.0
 python-dateutil==2.7.2
