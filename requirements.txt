@@ -21,4 +21,4 @@ sklearn==0.0
 smart-open==1.5.7
 torch==0.4.0
 torchvision==0.2.1
-urllib3==1.22
+urllib3==1.26.5
